@@ -60,6 +60,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     config = configparser.ConfigParser()
+    config.optionxform = lambda option: option  # preserve case of channel names
     config.read(args.config)
 
     notify2.init('ytrssabo.py')
