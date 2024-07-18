@@ -4,6 +4,7 @@ import argparse
 import configparser
 
 import requests
+import yt_dlp
 
 from bs4 import BeautifulSoup
 
@@ -11,7 +12,7 @@ from bs4 import BeautifulSoup
 def get_video_urls(feed_url):
     '''extracts the video URLS inside a youtube RSS feed'''
     video_urls = []
-    
+
     feed = requests.get(feed_url)
 
     soup = BeautifulSoup(feed.text, features='xml')
@@ -22,6 +23,24 @@ def get_video_urls(feed_url):
 
     return video_urls
 
+
+def download_channel(name, feed_url):
+    '''download all videos from a channel feed to the folder name'''
+    urls = get_video_urls(feed_url)
+
+    ydl = yt_dlp.YoutubeDL(params={'paths': {'home': f'./{name}'}})
+    ydl.download(urls)
+
+
 if __name__ == '__main__':
 
-    print(get_video_urls('https://www.youtube.com/feeds/videos.xml?channel_id=UCtM5z2gkrGRuWd0JQMx76qA'))
+    parser = argparse.ArgumentParser('Tool to automatically download new videos of select Youtube channels')
+    parser.add_argument('config', help='Configuration file')
+
+    args = parser.parse_args()
+
+    config = configparser.ConfigParser()
+    config.read(args.config)
+
+    for name, feed_url in config['Channels'].items():
+        download_channel(name, feed_url)
