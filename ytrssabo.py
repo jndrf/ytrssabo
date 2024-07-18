@@ -28,8 +28,13 @@ def download_channel(name, feed_url):
     '''download all videos from a channel feed to the folder name'''
     urls = get_video_urls(feed_url)
 
-    ydl = yt_dlp.YoutubeDL(params={'paths': {'home': f'./{name}'}})
-    ydl.download(urls)
+    ydl = yt_dlp.YoutubeDL(params={
+        'paths': {'home': f'./{name}'},
+        'download_archive': f'./{name}/archive.txt'
+    })
+    retcode = ydl.download(urls[:1])
+    if retcode != 0:
+        raise RuntimeError(f'Download attempt resulted in error {retcode}')
 
 
 if __name__ == '__main__':
