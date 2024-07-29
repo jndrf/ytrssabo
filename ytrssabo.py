@@ -55,12 +55,20 @@ def download_channel(name, feed_url):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser('Tool to automatically download new videos of select Youtube channels')
-    parser.add_argument('config', help='Configuration file')
-
+    parser.add_argument('--config', help='Configuration file', default=None)
+    
     args = parser.parse_args()
 
+    if args.config is None:
+        xdg_config_home = os.getenv('XDG_CONFIG_HOME', default='~/.config/')
+        args.config = f'{xdg_config_home}/ytrssabo/ytrssabo.cfg'
+
     config = configparser.ConfigParser()
-    config.optionxform = lambda option: option  # preserve case of channel names
+    config.optionxform = lambda option: option     # preserve case of channel names
+    args.config = os.path.expandvars(args.config)  # path may contain env variables
+    args.config = os.path.expanduser(args.config)  # or start with ~/
+    if not os.path.exists(args.config):
+        raise FileNotFoundError(f'cannot find configuration file {args.config}')
     config.read(args.config)
 
     notify2.init('ytrssabo.py')
