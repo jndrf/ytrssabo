@@ -26,7 +26,7 @@ def get_video_urls(feed_url):
     return video_urls
 
 
-def download_channel(name, feed_url):
+def download_channel(name, feed_url, base_folder='./'):
     '''download all videos from a channel feed to the folder name
 
     returns the number of downloaded videos
@@ -40,8 +40,8 @@ def download_channel(name, feed_url):
         nfiles = 0
 
     ydl = yt_dlp.YoutubeDL(params={
-        'paths': {'home': f'./{name}'},
-        'download_archive': f'./{name}/archive.txt'
+        'paths': {'home': '/'.join([base_folder, name])},
+        'download_archive': '/'.join([base_folder, name, 'archive.txt'])
     })
     retcode = ydl.download(urls[:1])
     if retcode != 0:
@@ -74,7 +74,8 @@ if __name__ == '__main__':
     notify2.init('ytrssabo.py')
 
     for name, feed_url in config['Channels'].items():
-        nvid = download_channel(name, feed_url)
+        base_dir = config.get('General', 'output_folder', fallback='~/Videos/ytrssabo/')
+        nvid = download_channel(name, feed_url, base_dir)
         if nvid > 0:
             n = notify2.Notification(f'Downloaded {nvid} videos of channel {name}.')
             n.show()
