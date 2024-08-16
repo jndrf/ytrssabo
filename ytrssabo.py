@@ -26,7 +26,7 @@ def get_video_urls(feed_url):
     return video_urls
 
 
-def download_channel(name, feed_url, base_folder='./'):
+def download_channel(name, feed_url, base_folder='./', archive_folder='./'):
     '''download all videos from a channel feed to the folder name
 
     returns the number of downloaded videos
@@ -39,15 +39,17 @@ def download_channel(name, feed_url, base_folder='./'):
     except FileNotFoundError:
         nfiles = 0
 
+    channel_folder = os.path.normpath('/'.join([base_folder, name]))
+    channel_folder = os.path.expanduser(channel_folder)
     ydl = yt_dlp.YoutubeDL(params={
-        'paths': {'home': '/'.join([base_folder, name])},
-        'download_archive': '/'.join([base_folder, name, 'archive.txt'])
+        'paths': {'home': channel_folder},
+        'download_archive': os.path.normpath('/'.join([archive_folder, name]))
     })
     retcode = ydl.download(urls[:1])
     if retcode != 0:
         raise RuntimeError(f'Download attempt resulted in error {retcode}')
 
-    nfiles_new = len(os.listdir(f'./{name}'))
+    nfiles_new = len(os.listdir(channel_folder))
 
     return nfiles_new - nfiles
 
@@ -71,11 +73,21 @@ if __name__ == '__main__':
         raise FileNotFoundError(f'cannot find configuration file {args.config}')
     config.read(args.config)
 
+    # ensure that archive folder exists
+    xdg_data_home = os.getenv('XDG_DATA_HOME', default='~/.local/share/')
+    try:
+        archive_dir = os.path.join(xdg_data_home, 'ytrssabo', 'archives')
+        archive_dir = os.path.expanduser(archive_dir)
+        os.makedirs(archive_dir)
+        print('created archive folder at ', archive_dir)
+    except FileExistsError:
+        pass
+
     notify2.init('ytrssabo.py')
 
     for name, feed_url in config['Channels'].items():
         base_dir = config.get('General', 'output_folder', fallback='~/Videos/ytrssabo/')
-        nvid = download_channel(name, feed_url, base_dir)
+        nvid = download_channel(name, feed_url, base_dir, archive_dir)
         if nvid > 0:
             n = notify2.Notification(f'Downloaded {nvid} videos of channel {name}.')
             n.show()
