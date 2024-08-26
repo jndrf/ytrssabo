@@ -18,6 +18,6 @@ Tool to automatically download new videos of select Youtube channels for local v
   ./get_feed_url.py https://www.youtube.com/@rossmanngroup
   #+END_SRC
 
-  By default, downloaded videos will be stored in per-channel subfolders of ~~/Videos/ytrssabo~.
-  A list of already downloaded videos is kept in ~~/.local/share/ytrssabo/archives~.
+  By default, downloaded videos will be stored in per-channel subfolders of =~/Videos/ytrssabo=.
+  A list of already downloaded videos is kept in =~/.local/share/ytrssabo/archives=.
   
