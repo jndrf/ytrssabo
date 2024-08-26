@@ -1,0 +1,23 @@
+#+TITLE: RSS-based local Youtube Abonnements
+
+Tool to automatically download new videos of select Youtube channels for local viewing, based on [[https://github.com/yt-dlp/yt-dlp][~yt-dlp~]].
+* Installation
+  #+BEGIN_SRC shell
+  git clone https://github.com/jndrf/ytrssabo.git
+  pip install --user requirements.txt
+  #+END_SRC
+* Configuration
+  The script ~ytrssabo.py~ expects a configuration file either as command-line argument or in ~$XDG_CONFIG_HOME/ytrssabo/ytrssabo.cfg~.
+  The section ~[Channels]~ contains a list of channel names (which can be arbitrary and just name the output folder) and the corresponding rss feed, e.g.
+  #+BEGIN_SRC
+  [Channels]
+  Louis Rossman: https://www.youtube.com/feeds/videos.xml?channel_id=UCl2mFZoRqjw_ELax4Yisf6w
+  #+END_SRC
+  You can obtain the URL of the RSS feed from the channel overview page with
+  #+BEGIN_SRC shell
+  ./get_feed_url.py https://www.youtube.com/@rossmanngroup
+  #+END_SRC
+
+  By default, downloaded videos will be stored in per-channel subfolders of ~~/Videos/ytrssabo~.
+  A list of already downloaded videos is kept in ~~/.local/share/ytrssabo/archives~.
+  

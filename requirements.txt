@@ -1,0 +1,4 @@
+beautifulsoup4==4.12.3
+notify2==0.3.1
+Requests==2.32.3
+yt_dlp==2024.8.6
