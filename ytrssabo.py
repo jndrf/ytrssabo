@@ -26,7 +26,7 @@ def get_video_urls(feed_url):
     return video_urls
 
 
-def download_channel(name, feed_url, base_folder='./', archive_folder='./'):
+def download_channel(name, feed_url, base_folder='./', archive_folder='./', download_options={}):
     '''download all videos from a channel feed to the folder name
 
     returns the number of downloaded videos
@@ -41,10 +41,10 @@ def download_channel(name, feed_url, base_folder='./', archive_folder='./'):
 
     channel_folder = os.path.normpath('/'.join([base_folder, name]))
     channel_folder = os.path.expanduser(channel_folder)
-    ydl = yt_dlp.YoutubeDL(params={
-        'paths': {'home': channel_folder},
-        'download_archive': os.path.normpath('/'.join([archive_folder, name]))
-    })
+
+    download_options['paths'] = {'home': channel_folder}
+    download_options['download_archive'] = os.path.normpath('/'.join([archive_folder, name]))
+    ydl = yt_dlp.YoutubeDL(params=download_options)
     retcode = ydl.download(urls[:1])
     if retcode != 0:
         raise RuntimeError(f'Download attempt resulted in error {retcode}')
@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser('Tool to automatically download new videos of select Youtube channels')
     parser.add_argument('--config', help='Configuration file', default=None)
-    
+
     args = parser.parse_args()
 
     if args.config is None:
@@ -83,11 +83,19 @@ if __name__ == '__main__':
     except FileExistsError:
         pass
 
+    # read download options
+    if config.has_section('DownloaderOptions'):
+        # yt-dlp expects a dict for the path option,
+        # configparser supports only strings as option values
+        downloader_options = dict(config['DownloaderOptions'])
+    else:
+        downloader_options = {}
+
     notify2.init('ytrssabo.py')
 
     for name, feed_url in config['Channels'].items():
         base_dir = config.get('General', 'output_folder', fallback='~/Videos/ytrssabo/')
-        nvid = download_channel(name, feed_url, base_dir, archive_dir)
+        nvid = download_channel(name, feed_url, base_dir, archive_dir, downloader_options)
         if nvid > 0:
             n = notify2.Notification(f'Downloaded {nvid} videos of channel {name}.')
             n.show()

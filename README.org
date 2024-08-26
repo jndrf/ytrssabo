@@ -8,6 +8,7 @@ Tool to automatically download new videos of select Youtube channels for local v
   #+END_SRC
 * Configuration
   The script ~ytrssabo.py~ expects a configuration file either as command-line argument or in ~$XDG_CONFIG_HOME/ytrssabo/ytrssabo.cfg~.
+  For an example, see ~feedreader.cfg~ in this repository.
   The section ~[Channels]~ contains a list of channel names (which can be arbitrary and just name the output folder) and the corresponding rss feed, e.g.
   #+BEGIN_SRC
   [Channels]
@@ -20,4 +21,7 @@ Tool to automatically download new videos of select Youtube channels for local v
 
   By default, downloaded videos will be stored in per-channel subfolders of =~/Videos/ytrssabo=.
   A list of already downloaded videos is kept in =~/.local/share/ytrssabo/archives=.
-  
+** Configuring yt-dlp
+   ~yt-dlp~ has many different options describe in [[https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/YoutubeDL.py#L190]].
+   They can be specified in the configuration file in a section ~[DownloaderOptions]~, which contents will be passed verbatim to ~yt-dlp~.
+   
