@@ -16,7 +16,7 @@ Tool to automatically download new videos of select Youtube channels for local v
   #+END_SRC
   You can obtain the URL of the RSS feed from the channel overview page with
   #+BEGIN_SRC shell
-  ./get_feed_url.py https://www.youtube.com/@rossmanngroup
+  ./get_youtube_rss_feed_url.py https://www.youtube.com/@rossmanngroup
   #+END_SRC
 
   By default, downloaded videos will be stored in per-channel subfolders of =~/Videos/ytrssabo=.
