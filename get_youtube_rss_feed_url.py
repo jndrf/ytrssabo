@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+'''
+This is free software. You may use, modify and distribute it under the
+GNU General Public License, version 3 or, at your choice, any later version.
+
+A copy of the license should be included in this distribution. If not, you can
+view it at https://www.gnu.org/licenses/gpl-3.0.html.
+'''
 
 import argparse
 import requests

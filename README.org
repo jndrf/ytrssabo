@@ -1,6 +1,10 @@
 #+TITLE: RSS-based local Youtube Abonnements
 
 Tool to automatically download new videos of select Youtube channels for local viewing, based on [[https://github.com/yt-dlp/yt-dlp][~yt-dlp~]].
+
+This is free software. You may use, modify and distribute it under the GNU General Public License, version 3 or, at your choice, any later version.
+A copy of the license should be [[./LICENSE][included in this distribution]]. If not, you can view it at [[https://www.gnu.org/licenses/gpl-3.0.html]].
+
 * Installation
   #+BEGIN_SRC shell
   git clone https://github.com/jndrf/ytrssabo.git
