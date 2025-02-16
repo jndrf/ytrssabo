@@ -1,0 +1,33 @@
+[project]
+name = "ytrssabo"
+version = "0.1.0"
+description = "Tool to automatically download new youtube videos from select channels"
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
+license = {text = "GPL v3 or later"}
+readme = "README.org"
+requires-python = ">=3.9"
+dependencies = [
+    "beautifulsoup4 (==4.12.3)",
+    "notify2 (==0.3.1)",
+    "requests (==2.32.3)",
+    "yt-dlp (==2024.8.6)"
+]
+
+[tool.poetry]
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.9.6"
+pre-commit = "^4.1.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+quote-style = "single"
+docstring-code-format = true

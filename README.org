@@ -6,10 +6,21 @@ This is free software. You may use, modify and distribute it under the GNU Gener
 A copy of the license should be [[./LICENSE][included in this distribution]]. If not, you can view it at [[https://www.gnu.org/licenses/gpl-3.0.html]].
 
 * Installation
+This project uses [[https://python-poetry.org/][Poetry]] for dependency management.
+To install, simply do
   #+BEGIN_SRC shell
   git clone https://github.com/jndrf/ytrssabo.git
-  pip install --user requirements.txt
+  poetry install
   #+END_SRC
+At some point, a package will be available.
+** Development Dependencies
+#+BEGIN_SRC shell
+poetry install --with dev
+pre-commit install
+#+END_SRC
+
+This will install the [[https://docs.astral.sh/ruff/][ruff]] python linter and formatter and sets git hooks to run both on every commit.
+
 * Configuration
   The script ~ytrssabo.py~ expects a configuration file either as command-line argument or in ~$XDG_CONFIG_HOME/ytrssabo/ytrssabo.cfg~.
   For an example, see ~feedreader.cfg~ in this repository.
@@ -28,4 +39,3 @@ A copy of the license should be [[./LICENSE][included in this distribution]]. If
 ** Configuring yt-dlp
    ~yt-dlp~ has many different options describe in [[https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/YoutubeDL.py#L190]].
    They can be specified in the configuration file in a section ~[DownloaderOptions]~, which contents will be passed verbatim to ~yt-dlp~.
-   
